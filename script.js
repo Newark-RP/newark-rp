@@ -57,10 +57,10 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observer les elements
-document.querySelectorAll('.about-card, .feature-card, .rule-item, .staff-card, .hero-stats').forEach(el => {
+document.querySelectorAll('.about-card, .feature-card, .rule-item, .staff-card, .shop-card, .vip-card, .hero-stats').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s ease';
+    el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
     observer.observe(el);
 });
 
@@ -70,12 +70,64 @@ style.textContent = `.visible { opacity: 1 !important; transform: translateY(0) 
 document.head.appendChild(style);
 
 // Delay stagger pour les grilles
-document.querySelectorAll('.about-grid, .features-grid, .staff-grid, .rules-container').forEach(grid => {
+document.querySelectorAll('.about-grid, .features-grid, .staff-grid, .rules-container, .shop-grid, .vip-grid').forEach(grid => {
     const children = grid.children;
     Array.from(children).forEach((child, i) => {
-        child.style.transitionDelay = `${i * 0.1}s`;
+        child.style.transitionDelay = `${i * 0.15}s`;
     });
 });
+
+// ============ SECTION REVEAL ============
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('section-visible');
+        }
+    });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.section').forEach(section => {
+    sectionObserver.observe(section);
+});
+
+// ============ PARALLAX HERO ============
+window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const hero = document.querySelector('.hero-content');
+    if (hero && scrolled < window.innerHeight) {
+        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+        hero.style.opacity = 1 - (scrolled / window.innerHeight);
+    }
+});
+
+// ============ CURSOR GLOW EFFECT ============
+const heroSection = document.querySelector('.hero');
+if (heroSection) {
+    heroSection.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+        heroSection.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.05) 25%, var(--bg-dark) 60%)`;
+    });
+}
+
+// ============ TYPING EFFECT HERO SUBTITLE ============
+const heroSubtitle = document.querySelector('.hero-subtitle');
+if (heroSubtitle) {
+    const text = heroSubtitle.textContent;
+    heroSubtitle.textContent = '';
+    heroSubtitle.style.borderRight = '2px solid var(--cyan)';
+    let i = 0;
+    setTimeout(() => {
+        const typeInterval = setInterval(() => {
+            heroSubtitle.textContent += text[i];
+            i++;
+            if (i >= text.length) {
+                clearInterval(typeInterval);
+                setTimeout(() => { heroSubtitle.style.borderRight = 'none'; }, 1000);
+            }
+        }, 40);
+    }, 1500);
+}
 
 // ============ PARTICULES ============
 function createParticles() {

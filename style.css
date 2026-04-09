@@ -1175,6 +1175,121 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.5), 0 0 80px rgba(6, 182, 212, 0.2); }
+}
+
+@keyframes textGlow {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
+    50% { filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.6)) drop-shadow(0 0 60px rgba(6, 182, 212, 0.3)); }
+}
+
+@keyframes borderGlow {
+    0%, 100% { border-color: rgba(139, 92, 246, 0.2); }
+    50% { border-color: rgba(6, 182, 212, 0.5); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-60px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(60px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+/* Glow pulse sur le titre Newark */
+.title-newark {
+    animation: textGlow 3s ease-in-out infinite;
+}
+
+/* Badge hero pulse */
+.hero-badge {
+    animation: fadeInDown 1s ease, borderGlow 3s ease-in-out infinite;
+}
+
+/* Boutons glow */
+.btn-primary {
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Section headers shimmer */
+.gradient-text {
+    background-size: 200% auto;
+    animation: shimmer 4s linear infinite;
+}
+
+/* Cards float on hover */
+.about-card:hover,
+.feature-card:hover,
+.staff-card:hover,
+.shop-card:hover,
+.vip-card:hover {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* Separateur de section anime */
+.section-line {
+    animation: shimmer 3s linear infinite;
+    background-size: 200% auto;
+    background-image: linear-gradient(90deg, var(--cyan), var(--purple), var(--magenta), var(--cyan));
+}
+
+/* Neon glow sur les icones */
+.about-icon,
+.feature-icon {
+    transition: all 0.4s ease;
+}
+
+.about-card:hover .about-icon {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Social links rotation */
+.social-link:hover {
+    animation: float 1s ease-in-out infinite;
+}
+
+/* Smooth reveal pour les sections */
+.section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section.section-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Neon border pour les rule items */
+.rule-item:hover .rule-number {
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.6));
+}
+
+/* Cursor glow effect */
+.hero {
+    cursor: crosshair;
+}
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1024px) {
     .features-grid { grid-template-columns: repeat(2, 1fr); }
