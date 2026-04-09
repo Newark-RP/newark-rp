@@ -98,7 +98,7 @@ function createParticles() {
 createParticles();
 
 // ============ CANDIDATURE FORM ============
-const API_URL = 'https://script.google.com/macros/s/AKfycbxrsOLM7DxBM82t8Bq5k_J58HVSMn9AFEJVsVNSgzBh2qC_1y0n_ds3uLkNcapecR2ZMQ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwXsIdLWLMIG82zrKKgx4FMBmJ8pPCLHHlgOfWB2PcvSa_f9gHMp91j4Tq1DJK7utXUWA/exec';
 
 const form = document.getElementById('candidatureForm');
 const formSuccess = document.getElementById('formSuccess');
