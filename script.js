@@ -137,6 +137,27 @@ if (form) {
     });
 }
 
+// ============ MUSIQUE DE FOND ============
+const musicToggle = document.getElementById('musicToggle');
+const musicIcon = document.getElementById('musicIcon');
+const bgMusic = document.getElementById('bg-music');
+let isMuted = false;
+
+if (musicToggle) {
+    musicToggle.addEventListener('click', () => {
+        isMuted = !isMuted;
+        if (isMuted) {
+            bgMusic.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+            musicIcon.className = 'fas fa-volume-mute';
+            musicToggle.classList.add('muted');
+        } else {
+            bgMusic.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+            musicIcon.className = 'fas fa-volume-up';
+            musicToggle.classList.remove('muted');
+        }
+    });
+}
+
 // ============ SMOOTH SCROLL ============
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
