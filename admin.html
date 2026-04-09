@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newark RP - Panel Admin Candidatures</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --purple: #8B5CF6;
+            --cyan: #06B6D4;
+            --cyan-light: #22D3EE;
+            --magenta: #D946EF;
+            --gold: #F59E0B;
+            --bg-dark: #0a0015;
+            --bg-card: rgba(139, 92, 246, 0.08);
+            --text: #E2E8F0;
+            --text-muted: #94A3B8;
+            --gradient-main: linear-gradient(135deg, #06B6D4, #8B5CF6, #D946EF);
+            --gradient-gta: linear-gradient(135deg, #22D3EE, #8B5CF6, #EC4899);
+            --green: #22C55E;
+            --red: #EF4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: rgba(10, 0, 21, 0.95);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .admin-logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-gta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        .admin-badge {
+            padding: 6px 16px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--cyan-light);
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(139, 92, 246, 0.12);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-gta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-box .label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: transparent;
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--gradient-main);
+            border-color: transparent;
+        }
+
+        .candidatures-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .candidature-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(139, 92, 246, 0.12);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .candidature-card:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            cursor: pointer;
+            gap: 15px;
+        }
+
+        .card-header:hover {
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .card-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card-pseudo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .card-poste {
+            padding: 4px 14px;
+            background: rgba(6, 182, 212, 0.15);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--cyan-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-date {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .card-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .status-attente { background: rgba(245, 158, 11, 0.15); color: var(--gold); }
+        .status-accepte { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+        .status-refuse { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+
+        .toggle-icon {
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .candidature-card.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .card-details {
+            display: none;
+            padding: 0 25px 25px;
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .candidature-card.open .card-details {
+            display: block;
+        }
+
+        .detail-group {
+            margin-top: 18px;
+        }
+
+        .detail-group label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--cyan-light);
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .detail-group p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            border-radius: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .action-btn {
+            padding: 10px 28px;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-accept {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .btn-accept:hover {
+            background: var(--green);
+            color: white;
+        }
+
+        .btn-refuse {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .btn-refuse:hover {
+            background: var(--red);
+            color: white;
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            margin-left: auto;
+        }
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--red);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            background: var(--gradient-gta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover { color: var(--cyan-light); }
+
+        @media (max-width: 768px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .card-info { gap: 10px; }
+            .card-actions { flex-wrap: wrap; }
+            .btn-delete { margin-left: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar { grid-template-columns: 1fr; }
+            .admin-header { flex-wrap: wrap; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="admin-header">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour au site</a>
+        <span class="admin-logo">NEWARK - PANEL ADMIN</span>
+        <span class="admin-badge">STAFF ONLY</span>
+    </header>
+
+    <div class="admin-container">
+        <div class="stats-bar">
+            <div class="stat-box">
+                <div class="number" id="totalCount">0</div>
+                <div class="label">Total</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="attenteCount">0</div>
+                <div class="label">En attente</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="accepteCount">0</div>
+                <div class="label">Acceptees</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="refuseCount">0</div>
+                <div class="label">Refusees</div>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">Toutes</button>
+            <button class="filter-btn" data-filter="En attente">En attente</button>
+            <button class="filter-btn" data-filter="Accepte">Acceptees</button>
+            <button class="filter-btn" data-filter="Refuse">Refusees</button>
+        </div>
+
+        <div class="candidatures-list" id="candidaturesList"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxrsOLM7DxBM82t8Bq5k_J58HVSMn9AFEJVsVNSgzBh2qC_1y0n_ds3uLkNcapecR2ZMQ/exec';
+        let currentFilter = 'all';
+        let allCandidatures = [];
+
+        async function fetchCandidatures() {
+            try {
+                const res = await fetch(API_URL);
+                allCandidatures = await res.json();
+                renderCandidatures();
+            } catch (err) {
+                document.getElementById('candidaturesList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Erreur de connexion</h3>
+                        <p>Impossible de charger les candidatures. Reessaye.</p>
+                    </div>`;
+            }
+        }
+
+        function updateStats() {
+            const data = allCandidatures;
+            document.getElementById('totalCount').textContent = data.length;
+            document.getElementById('attenteCount').textContent = data.filter(c => c.statut === 'En attente').length;
+            document.getElementById('accepteCount').textContent = data.filter(c => c.statut === 'Accepte').length;
+            document.getElementById('refuseCount').textContent = data.filter(c => c.statut === 'Refuse').length;
+        }
+
+        function getStatusClass(statut) {
+            if (statut === 'Accepte') return 'status-accepte';
+            if (statut === 'Refuse') return 'status-refuse';
+            return 'status-attente';
+        }
+
+        function renderCandidatures() {
+            const list = document.getElementById('candidaturesList');
+            let data = [...allCandidatures].reverse();
+
+            if (currentFilter !== 'all') {
+                data = data.filter(c => c.statut === currentFilter);
+            }
+
+            if (data.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>Aucune candidature</h3>
+                        <p>${currentFilter === 'all' ? 'Les candidatures apparaitront ici.' : 'Aucune candidature avec ce statut.'}</p>
+                    </div>
+                `;
+                updateStats();
+                return;
+            }
+
+            list.innerHTML = data.map(c => `
+                <div class="candidature-card" data-id="${c.id}">
+                    <div class="card-header" onclick="toggleCard(${c.id})">
+                        <div class="card-info">
+                            <span class="card-pseudo">${c.pseudo}</span>
+                            <span class="card-poste">${c.poste}</span>
+                            <span class="card-date"><i class="far fa-clock"></i> ${c.date}</span>
+                        </div>
+                        <div class="card-right">
+                            <span class="status-badge ${getStatusClass(c.statut)}">${c.statut}</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-group">
+                            <label><i class="fab fa-discord"></i> Discord</label>
+                            <p>${c.discord}</p>
+                        </div>
+                        <div class="detail-group">
+                            <label><i class="fas fa-birthday-cake"></i> Age</label>
+                            <p>${c.age} ans</p>
+                        </div>
+                        <div class="detail-group">
+                            <label><i class="fas fa-history"></i> Experience</label>
+                            <p>${c.experience}</p>
+                        </div>
+                        <div class="detail-group">
+                            <label><i class="fas fa-clock"></i> Disponibilite</label>
+                            <p>${c.disponibilite}</p>
+                        </div>
+                        <div class="detail-group">
+                            <label><i class="fas fa-heart"></i> Motivation</label>
+                            <p>${c.motivation}</p>
+                        </div>
+                        <div class="detail-group">
+                            <label><i class="fas fa-exclamation-triangle"></i> Mise en situation</label>
+                            <p>${c.situation}</p>
+                        </div>
+                        ${c.complement ? `
+                        <div class="detail-group">
+                            <label><i class="fas fa-plus-circle"></i> Complement</label>
+                            <p>${c.complement}</p>
+                        </div>` : ''}
+                        <div class="card-actions">
+                            <button class="action-btn btn-accept" onclick="updateStatus(${c.id}, 'Accepte')">
+                                <i class="fas fa-check"></i> Accepter
+                            </button>
+                            <button class="action-btn btn-refuse" onclick="updateStatus(${c.id}, 'Refuse')">
+                                <i class="fas fa-times"></i> Refuser
+                            </button>
+                            <button class="action-btn btn-delete" onclick="deleteCandidature(${c.id})">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        function toggleCard(id) {
+            const card = document.querySelector(`[data-id="${id}"]`);
+            card.classList.toggle('open');
+        }
+
+        async function updateStatus(id, statut) {
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'update', id: String(id), statut }),
+                    headers: { 'Content-Type': 'text/plain' }
+                });
+                const index = allCandidatures.findIndex(c => String(c.id) === String(id));
+                if (index > -1) allCandidatures[index].statut = statut;
+                renderCandidatures();
+            } catch (err) {
+                alert('Erreur lors de la mise a jour.');
+            }
+        }
+
+        async function deleteCandidature(id) {
+            if (confirm('Supprimer cette candidature ?')) {
+                try {
+                    await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', id: String(id) }),
+                        headers: { 'Content-Type': 'text/plain' }
+                    });
+                    allCandidatures = allCandidatures.filter(c => String(c.id) !== String(id));
+                    renderCandidatures();
+                } catch (err) {
+                    alert('Erreur lors de la suppression.');
+                }
+            }
+        }
+
+        // Filtres
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderCandidatures();
+            });
+        });
+
+        // Init
+        fetchCandidatures();
+    </script>
+</body>
+</html>

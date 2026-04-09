@@ -26,6 +26,7 @@
                 <li><a href="#regles">Regles</a></li>
                 <li><a href="#staff">Staff</a></li>
                 <li><a href="#boutique">Boutique</a></li>
+                <li><a href="#candidature">Candidature</a></li>
                 <li><a href="#rejoindre" class="btn-join">Rejoindre</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
@@ -356,6 +357,76 @@
                         <li><i class="fas fa-check"></i> Role exclusif Discord</li>
                     </ul>
                     <a href="https://discord.gg/fgJKR7Qe9K" class="btn btn-gta" target="_blank">Acheter</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Candidature Staff -->
+    <section class="section section-dark" id="candidature">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">RECRUTEMENT</span>
+                <h2 class="section-title">CANDIDATURE <span class="gradient-text">STAFF</span></h2>
+                <div class="section-line"></div>
+                <p class="shop-desc">Tu veux rejoindre l'equipe ? Remplis le formulaire ci-dessous.</p>
+            </div>
+            <div class="form-container">
+                <form class="candidature-form" id="candidatureForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pseudo">Pseudo en jeu</label>
+                            <input type="text" id="pseudo" name="pseudo" placeholder="Ton pseudo IG" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="discord">Discord</label>
+                            <input type="text" id="discord" name="discord" placeholder="Pseudo#0000" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" placeholder="Ton age" min="13" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="poste">Poste souhaite</label>
+                            <select id="poste" name="poste" required>
+                                <option value="" disabled selected>Choisir un poste</option>
+                                <option value="moderateur">Moderateur</option>
+                                <option value="admin">Administrateur</option>
+                                <option value="dev">Developpeur</option>
+                                <option value="support">Support</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">As-tu de l'experience en tant que staff sur un serveur RP ?</label>
+                        <textarea id="experience" name="experience" rows="3" placeholder="Decris ton experience (serveurs, roles, duree...)" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="disponibilite">Quelle est ta disponibilite par semaine ?</label>
+                        <input type="text" id="disponibilite" name="disponibilite" placeholder="Ex: Tous les soirs + week-end" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivation">Pourquoi veux-tu rejoindre le staff de Newark ?</label>
+                        <textarea id="motivation" name="motivation" rows="4" placeholder="Explique ta motivation..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="situation">Un joueur insulte un autre joueur en plein RP, que fais-tu ?</label>
+                        <textarea id="situation" name="situation" rows="3" placeholder="Decris comment tu gererais cette situation..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="complement">Quelque chose a ajouter ?</label>
+                        <textarea id="complement" name="complement" rows="2" placeholder="Informations complementaires (optionnel)"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large btn-submit">
+                        <i class="fas fa-paper-plane"></i> Envoyer ma candidature
+                    </button>
+                </form>
+                <div class="form-success" id="formSuccess">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Candidature envoyee !</h3>
+                    <p>Merci pour ta candidature. L'equipe va l'examiner et te recontactera sur Discord.</p>
                 </div>
             </div>
         </div>

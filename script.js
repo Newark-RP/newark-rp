@@ -97,6 +97,46 @@ function createParticles() {
 }
 createParticles();
 
+// ============ CANDIDATURE FORM ============
+const API_URL = 'https://script.google.com/macros/s/AKfycbxrsOLM7DxBM82t8Bq5k_J58HVSMn9AFEJVsVNSgzBh2qC_1y0n_ds3uLkNcapecR2ZMQ/exec';
+
+const form = document.getElementById('candidatureForm');
+const formSuccess = document.getElementById('formSuccess');
+
+if (form) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('.btn-submit');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+        submitBtn.disabled = true;
+
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => data[key] = value);
+
+        data.date = new Date().toLocaleString('fr-FR');
+        data.statut = 'En attente';
+        data.id = Date.now().toString();
+
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'text/plain' }
+        })
+        .then(res => res.json())
+        .then(result => {
+            form.style.display = 'none';
+            formSuccess.classList.add('show');
+        })
+        .catch(err => {
+            alert('Erreur lors de l\'envoi. Reessaye plus tard.');
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer ma candidature';
+            submitBtn.disabled = false;
+        });
+    });
+}
+
 // ============ SMOOTH SCROLL ============
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
