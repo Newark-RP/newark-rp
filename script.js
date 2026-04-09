@@ -119,34 +119,17 @@ if (form) {
         data.statut = 'En attente';
         data.id = Date.now().toString();
 
-        // Envoi via formulaire classique pour eviter CORS
-        const formIframe = document.createElement('iframe');
-        formIframe.name = 'hidden_iframe';
-        formIframe.style.display = 'none';
-        document.body.appendChild(formIframe);
+        // Envoi via image GET pour eviter tout probleme CORS
+        const params = Object.keys(data).map(key =>
+            encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
+        ).join('&');
 
-        const tempForm = document.createElement('form');
-        tempForm.method = 'POST';
-        tempForm.action = API_URL;
-        tempForm.target = 'hidden_iframe';
-
-        Object.keys(data).forEach(key => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = data[key];
-            tempForm.appendChild(input);
-        });
-
-        document.body.appendChild(tempForm);
-        tempForm.submit();
-
-        setTimeout(() => {
+        const img = new Image();
+        img.onload = img.onerror = function() {
             form.style.display = 'none';
             formSuccess.classList.add('show');
-            tempForm.remove();
-            formIframe.remove();
-        }, 2000);
+        };
+        img.src = API_URL + '?action=add&' + params;
     });
 }
 
