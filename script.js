@@ -143,6 +143,30 @@ const musicIcon = document.getElementById('musicIcon');
 const bgMusic = document.getElementById('bg-music');
 let isMuted = false;
 
+const playlist = [
+    'X4yDzAMOGqI',
+    'vk6014HuxcE'
+];
+let currentTrack = 0;
+
+// Detecter quand la video se termine pour passer a la suivante
+window.addEventListener('message', function(event) {
+    try {
+        const data = JSON.parse(event.data);
+        if (data.event === 'onStateChange' && data.info === 0) {
+            currentTrack = (currentTrack + 1) % playlist.length;
+            bgMusic.src = 'https://www.youtube.com/embed/' + playlist[currentTrack] + '?autoplay=1&loop=0&controls=0&showinfo=0&mute=' + (isMuted ? '1' : '0') + '&enablejsapi=1';
+        }
+    } catch(e) {}
+});
+
+// Verifier toutes les 5 secondes si la video est finie (backup)
+setInterval(() => {
+    if (bgMusic) {
+        bgMusic.contentWindow.postMessage('{"event":"listening","id":1}', '*');
+    }
+}, 5000);
+
 if (musicToggle) {
     musicToggle.addEventListener('click', () => {
         isMuted = !isMuted;
