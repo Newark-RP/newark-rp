@@ -119,21 +119,34 @@ if (form) {
         data.statut = 'En attente';
         data.id = Date.now().toString();
 
-        fetch(API_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'text/plain' }
-        })
-        .then(() => {
+        // Envoi via formulaire classique pour eviter CORS
+        const formIframe = document.createElement('iframe');
+        formIframe.name = 'hidden_iframe';
+        formIframe.style.display = 'none';
+        document.body.appendChild(formIframe);
+
+        const tempForm = document.createElement('form');
+        tempForm.method = 'POST';
+        tempForm.action = API_URL;
+        tempForm.target = 'hidden_iframe';
+
+        Object.keys(data).forEach(key => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = data[key];
+            tempForm.appendChild(input);
+        });
+
+        document.body.appendChild(tempForm);
+        tempForm.submit();
+
+        setTimeout(() => {
             form.style.display = 'none';
             formSuccess.classList.add('show');
-        })
-        .catch(err => {
-            alert('Erreur lors de l\'envoi. Reessaye plus tard.');
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer ma candidature';
-            submitBtn.disabled = false;
-        });
+            tempForm.remove();
+            formIframe.remove();
+        }, 2000);
     });
 }
 
