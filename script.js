@@ -121,11 +121,11 @@ if (form) {
 
         fetch(API_URL, {
             method: 'POST',
+            mode: 'no-cors',
             body: JSON.stringify(data),
             headers: { 'Content-Type': 'text/plain' }
         })
-        .then(res => res.json())
-        .then(result => {
+        .then(() => {
             form.style.display = 'none';
             formSuccess.classList.add('show');
         })
