@@ -98,38 +98,37 @@ function createParticles() {
 createParticles();
 
 // ============ CANDIDATURE FORM ============
-const API_URL = 'https://script.google.com/macros/s/AKfycbwXsIdLWLMIG82zrKKgx4FMBmJ8pPCLHHlgOfWB2PcvSa_f9gHMp91j4Tq1DJK7utXUWA/exec';
-
 const form = document.getElementById('candidatureForm');
 const formSuccess = document.getElementById('formSuccess');
 
 if (form) {
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
+    form.addEventListener('submit', function() {
         const submitBtn = form.querySelector('.btn-submit');
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
         submitBtn.disabled = true;
 
-        const formData = new FormData(form);
-        const data = {};
-        formData.forEach((value, key) => data[key] = value);
+        // Ajouter les champs caches (id, date, statut)
+        const addHidden = (name, value) => {
+            let input = form.querySelector('input[name="' + name + '"]');
+            if (!input) {
+                input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                form.appendChild(input);
+            }
+            input.value = value;
+        };
 
-        data.date = new Date().toLocaleString('fr-FR');
-        data.statut = 'En attente';
-        data.id = Date.now().toString();
+        addHidden('id', Date.now().toString());
+        addHidden('date', new Date().toLocaleString('fr-FR'));
+        addHidden('statut', 'En attente');
 
-        // Envoi via image GET pour eviter tout probleme CORS
-        const params = Object.keys(data).map(key =>
-            encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
-        ).join('&');
-
-        const img = new Image();
-        img.onload = img.onerror = function() {
+        // Le formulaire s'envoie normalement via action/target
+        // Afficher succes apres 2 secondes
+        setTimeout(function() {
             form.style.display = 'none';
             formSuccess.classList.add('show');
-        };
-        img.src = API_URL + '?action=add&' + params;
+        }, 2000);
     });
 }
 
