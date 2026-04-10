@@ -290,12 +290,21 @@ window.addEventListener('message', function(event) {
     } catch(e) {}
 });
 
-// Verifier toutes les 5 secondes si la video est finie (backup)
+// Verifier toutes les 10 secondes si la musique joue encore (backup)
 setInterval(() => {
-    if (bgMusic) {
-        bgMusic.contentWindow.postMessage('{"event":"listening","id":1}', '*');
+    if (bgMusic && bgMusic.contentWindow) {
+        try {
+            bgMusic.contentWindow.postMessage('{"event":"listening","id":1}', '*');
+            // Re-set le volume au cas ou
+            bgMusic.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[' + currentVolume + ']}', '*');
+        } catch(e) {}
     }
-}, 5000);
+}, 10000);
+
+// Si l'iframe crash, la recharger
+bgMusic.addEventListener('error', () => {
+    bgMusic.src = 'https://www.youtube.com/embed/' + playlist[currentTrack] + '?autoplay=1&loop=0&controls=0&showinfo=0&mute=0&enablejsapi=1';
+});
 
 // Fonction pour set le volume
 function setVolume(vol) {
