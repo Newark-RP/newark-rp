@@ -267,7 +267,9 @@ if (form) {
 const musicToggle = document.getElementById('musicToggle');
 const musicIcon = document.getElementById('musicIcon');
 const bgMusic = document.getElementById('bg-music');
+const volumeRange = document.getElementById('volumeRange');
 let isMuted = false;
+let currentVolume = 50;
 
 const playlist = [
     'X4yDzAMOGqI',
@@ -282,6 +284,8 @@ window.addEventListener('message', function(event) {
         if (data.event === 'onStateChange' && data.info === 0) {
             currentTrack = (currentTrack + 1) % playlist.length;
             bgMusic.src = 'https://www.youtube.com/embed/' + playlist[currentTrack] + '?autoplay=1&loop=0&controls=0&showinfo=0&mute=' + (isMuted ? '1' : '0') + '&enablejsapi=1';
+            // Remettre le volume apres changement de track
+            setTimeout(() => setVolume(currentVolume), 1000);
         }
     } catch(e) {}
 });
@@ -293,6 +297,41 @@ setInterval(() => {
     }
 }, 5000);
 
+// Fonction pour set le volume
+function setVolume(vol) {
+    currentVolume = vol;
+    if (bgMusic && bgMusic.contentWindow) {
+        bgMusic.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[' + vol + ']}', '*');
+    }
+    // Mettre a jour l'icone
+    if (vol == 0) {
+        musicIcon.className = 'fas fa-volume-mute';
+    } else if (vol < 40) {
+        musicIcon.className = 'fas fa-volume-down';
+    } else {
+        musicIcon.className = 'fas fa-volume-up';
+    }
+}
+
+// Volume slider
+if (volumeRange) {
+    volumeRange.addEventListener('input', (e) => {
+        const vol = parseInt(e.target.value);
+        setVolume(vol);
+        if (vol === 0) {
+            isMuted = true;
+            musicToggle.classList.add('muted');
+        } else {
+            isMuted = false;
+            musicToggle.classList.remove('muted');
+        }
+    });
+}
+
+// Set volume initial apres chargement
+setTimeout(() => setVolume(50), 2000);
+
+// Bouton mute/unmute
 if (musicToggle) {
     musicToggle.addEventListener('click', () => {
         isMuted = !isMuted;
@@ -300,9 +339,11 @@ if (musicToggle) {
             bgMusic.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
             musicIcon.className = 'fas fa-volume-mute';
             musicToggle.classList.add('muted');
+            volumeRange.value = 0;
         } else {
             bgMusic.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-            musicIcon.className = 'fas fa-volume-up';
+            setVolume(currentVolume || 50);
+            volumeRange.value = currentVolume || 50;
             musicToggle.classList.remove('muted');
         }
     });

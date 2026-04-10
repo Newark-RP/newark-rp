@@ -22,9 +22,9 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <img src="assets/logo.png" alt="Newark RP" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <span class="logo-text" style="display:block;">NEWARK</span>
+            <a href="#accueil" class="nav-logo">
+                <img src="assets/logo.png" alt="Newark RP" class="logo-img" onerror="this.style.display='none';">
+                <span class="logo-text">NEWARK</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#accueil">Accueil</a></li>
@@ -51,6 +51,9 @@
     <section class="page hero" id="accueil">
         <div class="hero-overlay"></div>
         <div class="hero-content">
+            <div class="hero-logo-container">
+                <img src="assets/logo.png" alt="Newark RP" class="hero-logo">
+            </div>
             <div class="hero-badge">SERVEUR ROLEPLAY GTA</div>
             <h1 class="hero-title">
                 <span class="title-line">BIENVENUE A</span>
@@ -494,9 +497,14 @@
     <!-- Musique de fond YouTube - Playlist -->
     <iframe id="bg-music" width="0" height="0" src="https://www.youtube.com/embed/X4yDzAMOGqI?autoplay=1&loop=0&controls=0&showinfo=0&mute=0&enablejsapi=1" frameborder="0" allow="autoplay" style="position:fixed;top:-9999px;left:-9999px;"></iframe>
 
-    <!-- Bouton musique -->
-    <div class="music-toggle" id="musicToggle" title="Musique ON/OFF">
-        <i class="fas fa-volume-up" id="musicIcon"></i>
+    <!-- Controle musique -->
+    <div class="music-control" id="musicControl">
+        <div class="music-toggle" id="musicToggle" title="Musique ON/OFF">
+            <i class="fas fa-volume-up" id="musicIcon"></i>
+        </div>
+        <div class="volume-slider" id="volumeSlider">
+            <input type="range" min="0" max="100" value="50" id="volumeRange" class="volume-range">
+        </div>
     </div>
 
     <script src="script.js"></script>
