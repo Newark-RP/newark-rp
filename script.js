@@ -1,7 +1,116 @@
-// ============ NAVBAR SCROLL ============
+// ============ PAGE NAVIGATION ============
+const pages = document.querySelectorAll('.page');
+const wrapper = document.getElementById('pagesWrapper');
+const prevBtn = document.getElementById('prevPage');
+const nextBtn = document.getElementById('nextPage');
+const indicator = document.getElementById('pageIndicator');
+let currentPage = 0;
+let isAnimating = false;
+
+// Creer les dots
+pages.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.classList.add('page-dot');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToPage(i));
+    indicator.appendChild(dot);
+});
+
+function goToPage(index) {
+    if (isAnimating || index === currentPage) return;
+    isAnimating = true;
+    currentPage = index;
+    wrapper.style.transform = `translateX(-${currentPage * 100}vw)`;
+
+    // Update dots
+    document.querySelectorAll('.page-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentPage);
+    });
+
+    // Update arrows
+    prevBtn.classList.toggle('hidden', currentPage === 0);
+    nextBtn.classList.toggle('hidden', currentPage === pages.length - 1);
+
+    // Update navbar
+    navbar.classList.toggle('scrolled', currentPage > 0);
+
+    // Update nav links active state
+    const pageIds = Array.from(pages).map(p => p.id);
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            link.classList.toggle('nav-active', href === '#' + pageIds[currentPage]);
+        }
+    });
+
+    // Trigger animations on active page
+    pages[currentPage].classList.add('page-active');
+
+    setTimeout(() => { isAnimating = false; }, 800);
+}
+
+prevBtn.addEventListener('click', () => {
+    if (currentPage > 0) goToPage(currentPage - 1);
+});
+
+nextBtn.addEventListener('click', () => {
+    if (currentPage < pages.length - 1) goToPage(currentPage + 1);
+});
+
+// Hide left arrow on first page
+prevBtn.classList.add('hidden');
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' && currentPage > 0) goToPage(currentPage - 1);
+    if (e.key === 'ArrowRight' && currentPage < pages.length - 1) goToPage(currentPage + 1);
+});
+
+// Mouse wheel navigation (on pages that don't need scrolling)
+document.addEventListener('wheel', (e) => {
+    const activePage = pages[currentPage];
+    const isScrollable = activePage.scrollHeight > activePage.clientHeight;
+    const atTop = activePage.scrollTop === 0;
+    const atBottom = activePage.scrollTop + activePage.clientHeight >= activePage.scrollHeight - 5;
+
+    if (!isScrollable || (e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+        if (e.deltaY > 0 && currentPage < pages.length - 1) {
+            goToPage(currentPage + 1);
+        } else if (e.deltaY < 0 && currentPage > 0) {
+            goToPage(currentPage - 1);
+        }
+    }
+}, { passive: true });
+
+// Touch swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+});
+document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 80) {
+        if (diff > 0 && currentPage < pages.length - 1) goToPage(currentPage + 1);
+        if (diff < 0 && currentPage > 0) goToPage(currentPage - 1);
+    }
+});
+
+// ============ NAVBAR ============
 const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
+
+// Nav links click -> go to page
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            const targetId = href.substring(1);
+            const targetIndex = Array.from(pages).findIndex(p => p.id === targetId);
+            if (targetIndex !== -1) goToPage(targetIndex);
+        }
+        navLinks.classList.remove('active');
+        hamburger.classList.remove('active');
+    });
 });
 
 // ============ HAMBURGER MENU ============
@@ -11,13 +120,6 @@ const navLinks = document.querySelector('.nav-links');
 hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('active');
     hamburger.classList.toggle('active');
-});
-
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        hamburger.classList.remove('active');
-    });
 });
 
 // ============ COMPTEUR STATS ============
@@ -75,29 +177,6 @@ document.querySelectorAll('.about-grid, .features-grid, .staff-grid, .rules-cont
     Array.from(children).forEach((child, i) => {
         child.style.transitionDelay = `${i * 0.15}s`;
     });
-});
-
-// ============ SECTION REVEAL ============
-const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('section-visible');
-        }
-    });
-}, { threshold: 0.05 });
-
-document.querySelectorAll('.section').forEach(section => {
-    sectionObserver.observe(section);
-});
-
-// ============ PARALLAX HERO ============
-window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const hero = document.querySelector('.hero-content');
-    if (hero && scrolled < window.innerHeight) {
-        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-        hero.style.opacity = 1 - (scrolled / window.innerHeight);
-    }
 });
 
 // ============ CURSOR GLOW EFFECT ============
@@ -229,13 +308,5 @@ if (musicToggle) {
     });
 }
 
-// ============ SMOOTH SCROLL ============
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    });
-});
+// ============ INIT FIRST PAGE ============
+pages[0].classList.add('page-active');

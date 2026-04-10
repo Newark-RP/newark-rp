@@ -12,6 +12,13 @@
     <!-- Particules flottantes -->
     <div class="particles" id="particles"></div>
 
+    <!-- Fleches navigation -->
+    <button class="nav-arrow nav-arrow-left" id="prevPage"><i class="fas fa-chevron-left"></i></button>
+    <button class="nav-arrow nav-arrow-right" id="nextPage"><i class="fas fa-chevron-right"></i></button>
+
+    <!-- Indicateur de pages -->
+    <div class="page-indicator" id="pageIndicator"></div>
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -37,8 +44,11 @@
         </div>
     </nav>
 
+    <!-- Pages Wrapper -->
+    <div class="pages-wrapper" id="pagesWrapper">
+
     <!-- Hero Section -->
-    <section class="hero" id="accueil">
+    <section class="page hero" id="accueil">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-badge">SERVEUR ROLEPLAY GTA</div>
@@ -74,7 +84,7 @@
                 </div>
             </div>
         </div>
-        <div class="scroll-indicator">
+        <div class="scroll-indicator" style="display:none;">
             <div class="mouse">
                 <div class="wheel"></div>
             </div>
@@ -83,7 +93,7 @@
     </section>
 
     <!-- A propos -->
-    <section class="section" id="apropos">
+    <section class="page section" id="apropos">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">DECOUVRIR</span>
@@ -117,7 +127,7 @@
     </section>
 
     <!-- Features -->
-    <section class="section section-dark" id="features">
+    <section class="page section section-dark" id="features">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">GAMEPLAY</span>
@@ -160,7 +170,7 @@
     </section>
 
     <!-- Regles -->
-    <section class="section" id="regles">
+    <section class="page section" id="regles">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">IMPORTANT</span>
@@ -208,7 +218,7 @@
     </section>
 
     <!-- Staff -->
-    <section class="section section-dark" id="staff">
+    <section class="page section section-dark" id="staff">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">EQUIPE</span>
@@ -261,7 +271,7 @@
     </section>
 
     <!-- Boutique -->
-    <section class="section" id="boutique">
+    <section class="page section" id="boutique">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">SHOP</span>
@@ -363,7 +373,7 @@
     </section>
 
     <!-- Candidature Staff -->
-    <section class="section section-dark" id="candidature">
+    <section class="page section section-dark" id="candidature">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">RECRUTEMENT</span>
@@ -434,7 +444,7 @@
     </section>
 
     <!-- Rejoindre -->
-    <section class="section cta-section" id="rejoindre">
+    <section class="page section cta-section" id="rejoindre">
         <div class="container">
             <div class="cta-content">
                 <h2 class="cta-title">PRET A REJOINDRE <span class="gradient-text">NEWARK</span> ?</h2>
@@ -458,8 +468,10 @@
         </div>
     </section>
 
+    </div><!-- End pages-wrapper -->
+
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" style="display:none;">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
